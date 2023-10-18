@@ -1,0 +1,40 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/requireInterface.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { IERC165 } from \"./IERC165.sol\";\nimport { IWorldErrors } from \"./IWorldErrors.sol\";\n\n/**\n * Require the given contract to support the given interface by calling the ERC-165 supportsInterface function.\n */\nfunction requireInterface(address contractAddress, bytes4 interfaceId) view {\n  try IERC165(contractAddress).supportsInterface(interfaceId) returns (bool supported) {\n    if (!supported) {\n      revert IWorldErrors.World_InterfaceNotSupported(contractAddress, interfaceId);\n    }\n  } catch {\n    revert IWorldErrors.World_InterfaceNotSupported(contractAddress, interfaceId);\n  }\n}\n"
+    },
+    "src/CoreModule/IERC165.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * @dev Calculation for ERC-165 interface ID for the `supportsInterface` function.\n */\nbytes4 constant ERC165_INTERFACE_ID = IERC165.supportsInterface.selector;\n\n/**\n * @title IERC165\n * @dev Interface for the ERC-165 standard as described in the EIP-165.\n * Allows for contracts to be checked for their support of an interface.\n * See: https://eips.ethereum.org/EIPS/eip-165\n */\ninterface IERC165 {\n  /**\n   * @notice Query if a contract implements an interface.\n   * @dev Interface identification is specified in ERC-165.\n   * This function uses less than 30,000 gas.\n   * @param interfaceID The interface identifier, as specified in ERC-165.\n   * @return True if the contract implements `interfaceID` and\n   * `interfaceID` is not 0xffffffff, false otherwise.\n   */\n  function supportsInterface(bytes4 interfaceID) external view returns (bool);\n}\n"
+    },
+    "src/CoreModule/IWorldErrors.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { ResourceId } from \"./ResourceId.sol\";\n\ninterface IWorldErrors {\n  error World_AlreadyInitialized();\n  error World_ResourceAlreadyExists(ResourceId resourceId, string resourceIdString);\n  error World_ResourceNotFound(ResourceId resourceId, string resourceIdString);\n  error World_AccessDenied(string resource, address caller);\n  error World_InvalidResourceId(ResourceId resourceId, string resourceIdString);\n  error World_SystemAlreadyExists(address system);\n  error World_FunctionSelectorAlreadyExists(bytes4 functionSelector);\n  error World_FunctionSelectorNotFound(bytes4 functionSelector);\n  error World_DelegationNotFound(address delegator, address delegatee);\n  error World_UnlimitedDelegationNotAllowed();\n  error World_InsufficientBalance(uint256 balance, uint256 amount);\n  error World_InterfaceNotSupported(address contractAddress, bytes4 interfaceId);\n  error World_InvalidResourceType(bytes2 expected, ResourceId resourceId, string resourceIdString);\n  error World_CallbackNotAllowed(bytes4 functionSelector);\n}\n"
+    },
+    "src/CoreModule/ResourceId.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\ntype ResourceId is bytes32;\n\nuint256 constant TYPE_BITS = 2 * 8;\nuint256 constant NAME_BITS = 32 * 8 - TYPE_BITS;\n\nbytes32 constant TYPE_MASK = bytes32(hex\"ffff\");\n\nlibrary ResourceIdLib {\n  function encode(bytes2 typeId, bytes30 name) internal pure returns (ResourceId) {\n    return ResourceId.wrap(bytes32(typeId) | (bytes32(name) >> TYPE_BITS));\n  }\n}\n\nlibrary ResourceIdInstance {\n  function getType(ResourceId resourceId) internal pure returns (bytes2) {\n    return bytes2(ResourceId.unwrap(resourceId));\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/leftMask.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * Adapted from https://github.com/dk1a/solidity-stringutils/blob/main/src/utils/mem.sol#L149-L167\n * @dev Left-aligned byte mask (e.g. for partial mload/mstore).\n * For byteLength >= 32 returns type(uint256).max\n *\n * length 0:   0x000000...000000\n * length 1:   0xff0000...000000\n * length 2:   0xffff00...000000\n * ...\n * length 30:  0xffffff...ff0000\n * length 31:  0xffffff...ffff00\n * length 32+: 0xffffff...ffffff\n */\nfunction leftMask(uint256 byteLength) pure returns (uint256) {\n  unchecked {\n    return ~(type(uint256).max >> (byteLength * 8));\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/Memory.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { leftMask } from \"./leftMask.sol\";\n\nlibrary Memory {\n  /**\n   * In dynamic arrays the first word stores the length of data, after which comes the data.\n   * Example: 0x40 0x01 0x02\n   *          ^len ^data\n   */\n  function dataPointer(bytes memory data) internal pure returns (uint256 memoryPointer) {\n    assembly {\n      memoryPointer := add(data, 0x20)\n    }\n  }\n\n  function copy(uint256 fromPointer, uint256 toPointer, uint256 length) internal pure {\n    // Copy 32-byte chunks\n    while (length >= 32) {\n      /// @solidity memory-safe-assembly\n      assembly {\n        mstore(toPointer, mload(fromPointer))\n      }\n      // Safe because total addition will be <= length (ptr+len is implicitly safe)\n      unchecked {\n        toPointer += 32;\n        fromPointer += 32;\n        length -= 32;\n      }\n    }\n    if (length == 0) return;\n\n    // Copy the 0-31 length tail\n    uint256 mask = leftMask(length);\n    /// @solidity memory-safe-assembly\n    assembly {\n      mstore(\n        toPointer,\n        or(\n          // store the left part\n          and(mload(fromPointer), mask),\n          // preserve the right part\n          and(mload(toPointer), not(mask))\n        )\n      )\n    }\n  }\n}\n"
+    },
+    "src/CoreModule/leftMask.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * Adapted from https://github.com/dk1a/solidity-stringutils/blob/main/src/utils/mem.sol#L149-L167\n * @dev Left-aligned byte mask (e.g. for partial mload/mstore).\n * For byteLength >= 32 returns type(uint256).max\n *\n * length 0:   0x000000...000000\n * length 1:   0xff0000...000000\n * length 2:   0xffff00...000000\n * ...\n * length 30:  0xffffff...ff0000\n * length 31:  0xffffff...ffff00\n * length 32+: 0xffffff...ffffff\n */\nfunction leftMask(uint256 byteLength) pure returns (uint256) {\n  unchecked {\n    return ~(type(uint256).max >> (byteLength * 8));\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

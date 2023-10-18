@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/revertWithBytes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * Utility function to revert with raw bytes (eg. coming from a low level call or from a previously encoded error)\n */\nfunction revertWithBytes(bytes memory reason) pure {\n  assembly {\n    // reason+32 is a pointer to the error message, mload(reason) is the length of the error message\n    revert(add(reason, 0x20), mload(reason))\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

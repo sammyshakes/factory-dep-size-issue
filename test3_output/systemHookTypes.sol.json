@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/systemHookTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * @title System Hook Types\n * @dev This file provides constants for defining the different types of system hooks.\n * System hooks can be used to execute additional logic before or after system actions.\n */\n\n/**\n * @dev Constant representing a hook that is triggered before a system call.\n */\nuint8 constant BEFORE_CALL_SYSTEM = 1 << 0;\n\n/**\n * @dev Constant representing a hook that is triggered after a system call.\n */\nuint8 constant AFTER_CALL_SYSTEM = 1 << 1;\n\n/**\n * @dev Constant representing all types of system hooks.\n * It's a bitmap with flags from all system hook types enabled.\n */\nuint8 constant ALL = BEFORE_CALL_SYSTEM | AFTER_CALL_SYSTEM;\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

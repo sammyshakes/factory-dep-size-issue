@@ -1,0 +1,34 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/IWorldContextConsumer.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { IERC165, ERC165_INTERFACE_ID } from \"./IERC165.sol\";\n\n// ERC-165 Interface ID (see https://eips.ethereum.org/EIPS/eip-165)\nbytes4 constant WORLD_CONTEXT_CONSUMER_INTERFACE_ID = IWorldContextConsumer._msgSender.selector ^\n  IWorldContextConsumer._msgValue.selector ^\n  IWorldContextConsumer._world.selector ^\n  ERC165_INTERFACE_ID;\n\ninterface IWorldContextConsumer is IERC165 {\n  function _msgSender() external view returns (address);\n\n  function _msgValue() external view returns (uint256);\n\n  function _world() external view returns (address);\n}\n"
+    },
+    "src/CoreModule/IERC165.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\n/**\n * @dev Calculation for ERC-165 interface ID for the `supportsInterface` function.\n */\nbytes4 constant ERC165_INTERFACE_ID = IERC165.supportsInterface.selector;\n\n/**\n * @title IERC165\n * @dev Interface for the ERC-165 standard as described in the EIP-165.\n * Allows for contracts to be checked for their support of an interface.\n * See: https://eips.ethereum.org/EIPS/eip-165\n */\ninterface IERC165 {\n  /**\n   * @notice Query if a contract implements an interface.\n   * @dev Interface identification is specified in ERC-165.\n   * This function uses less than 30,000 gas.\n   * @param interfaceID The interface identifier, as specified in ERC-165.\n   * @return True if the contract implements `interfaceID` and\n   * `interfaceID` is not 0xffffffff, false otherwise.\n   */\n  function supportsInterface(bytes4 interfaceID) external view returns (bool);\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

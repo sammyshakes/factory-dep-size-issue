@@ -1,0 +1,40 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/constants.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { ResourceId } from \"./ResourceId.sol\";\n\nimport { RESOURCE_SYSTEM, RESOURCE_NAMESPACE } from \"./worldResourceTypes.sol\";\n\nbytes14 constant ROOT_NAMESPACE = \"\";\nbytes16 constant ROOT_NAME = \"\";\n\nResourceId constant WORLD_NAMESPACE_ID = ResourceId.wrap(\n  bytes32(abi.encodePacked(RESOURCE_NAMESPACE, bytes14(\"world\"), ROOT_NAME))\n);\n\nResourceId constant ROOT_NAMESPACE_ID = ResourceId.wrap(\n  bytes32(abi.encodePacked(RESOURCE_NAMESPACE, ROOT_NAMESPACE, ROOT_NAME))\n);\n\nResourceId constant UNLIMITED_DELEGATION = ResourceId.wrap(\n  bytes32(abi.encodePacked(RESOURCE_SYSTEM, ROOT_NAMESPACE, bytes16(\"unlimited\")))\n);\n"
+    },
+    "src/CoreModule/ResourceId.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\ntype ResourceId is bytes32;\n\nuint256 constant TYPE_BITS = 2 * 8;\nuint256 constant NAME_BITS = 32 * 8 - TYPE_BITS;\n\nbytes32 constant TYPE_MASK = bytes32(hex\"ffff\");\n\nlibrary ResourceIdLib {\n  function encode(bytes2 typeId, bytes30 name) internal pure returns (ResourceId) {\n    return ResourceId.wrap(bytes32(typeId) | (bytes32(name) >> TYPE_BITS));\n  }\n}\n\nlibrary ResourceIdInstance {\n  function getType(ResourceId resourceId) internal pure returns (bytes2) {\n    return bytes2(ResourceId.unwrap(resourceId));\n  }\n}\n"
+    },
+    "src/CoreModule/worldResourceTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { RESOURCE_TABLE, RESOURCE_OFFCHAIN_TABLE } from \"./storeResourceTypes.sol\";\n\nbytes2 constant RESOURCE_NAMESPACE = \"ns\";\nbytes2 constant RESOURCE_MODULE = \"md\";\nbytes2 constant RESOURCE_SYSTEM = \"sy\";\n\nbytes32 constant MASK_RESOURCE_NAMESPACE = bytes32(RESOURCE_NAMESPACE);\nbytes32 constant MASK_RESOURCE_MODULE = bytes32(RESOURCE_MODULE);\nbytes32 constant MASK_RESOURCE_SYSTEM = bytes32(RESOURCE_SYSTEM);\n"
+    },
+    "src/CoreModule/storeResourceTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nbytes2 constant RESOURCE_TABLE = \"tb\";\nbytes2 constant RESOURCE_OFFCHAIN_TABLE = \"ot\";\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}
