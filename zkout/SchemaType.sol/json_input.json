@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/SchemaType.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nusing { getStaticByteLength } for SchemaType global;\n\n// WARNING: All enum changes MUST be mirrored for the other languages!\n// WARNING: SchemaType methods use hardcoded enum indexes, review them after any changes to the enum\n// TODO add and implement BYTES_ARRAY, STRING_ARRAY if they are needed (see https://github.com/latticexyz/mud/issues/447)\nenum SchemaType {\n  UINT8,\n  UINT16,\n  UINT24,\n  UINT32,\n  UINT40,\n  UINT48,\n  UINT56,\n  UINT64,\n  UINT72,\n  UINT80,\n  UINT88,\n  UINT96,\n  UINT104,\n  UINT112,\n  UINT120,\n  UINT128,\n  UINT136,\n  UINT144,\n  UINT152,\n  UINT160,\n  UINT168,\n  UINT176,\n  UINT184,\n  UINT192,\n  UINT200,\n  UINT208,\n  UINT216,\n  UINT224,\n  UINT232,\n  UINT240,\n  UINT248,\n  UINT256,\n  INT8,\n  INT16,\n  INT24,\n  INT32,\n  INT40,\n  INT48,\n  INT56,\n  INT64,\n  INT72,\n  INT80,\n  INT88,\n  INT96,\n  INT104,\n  INT112,\n  INT120,\n  INT128,\n  INT136,\n  INT144,\n  INT152,\n  INT160,\n  INT168,\n  INT176,\n  INT184,\n  INT192,\n  INT200,\n  INT208,\n  INT216,\n  INT224,\n  INT232,\n  INT240,\n  INT248,\n  INT256,\n  BYTES1,\n  BYTES2,\n  BYTES3,\n  BYTES4,\n  BYTES5,\n  BYTES6,\n  BYTES7,\n  BYTES8,\n  BYTES9,\n  BYTES10,\n  BYTES11,\n  BYTES12,\n  BYTES13,\n  BYTES14,\n  BYTES15,\n  BYTES16,\n  BYTES17,\n  BYTES18,\n  BYTES19,\n  BYTES20,\n  BYTES21,\n  BYTES22,\n  BYTES23,\n  BYTES24,\n  BYTES25,\n  BYTES26,\n  BYTES27,\n  BYTES28,\n  BYTES29,\n  BYTES30,\n  BYTES31,\n  BYTES32,\n  BOOL,\n  ADDRESS,\n  UINT8_ARRAY,\n  UINT16_ARRAY,\n  UINT24_ARRAY,\n  UINT32_ARRAY,\n  UINT40_ARRAY,\n  UINT48_ARRAY,\n  UINT56_ARRAY,\n  UINT64_ARRAY,\n  UINT72_ARRAY,\n  UINT80_ARRAY,\n  UINT88_ARRAY,\n  UINT96_ARRAY,\n  UINT104_ARRAY,\n  UINT112_ARRAY,\n  UINT120_ARRAY,\n  UINT128_ARRAY,\n  UINT136_ARRAY,\n  UINT144_ARRAY,\n  UINT152_ARRAY,\n  UINT160_ARRAY,\n  UINT168_ARRAY,\n  UINT176_ARRAY,\n  UINT184_ARRAY,\n  UINT192_ARRAY,\n  UINT200_ARRAY,\n  UINT208_ARRAY,\n  UINT216_ARRAY,\n  UINT224_ARRAY,\n  UINT232_ARRAY,\n  UINT240_ARRAY,\n  UINT248_ARRAY,\n  UINT256_ARRAY,\n  INT8_ARRAY,\n  INT16_ARRAY,\n  INT24_ARRAY,\n  INT32_ARRAY,\n  INT40_ARRAY,\n  INT48_ARRAY,\n  INT56_ARRAY,\n  INT64_ARRAY,\n  INT72_ARRAY,\n  INT80_ARRAY,\n  INT88_ARRAY,\n  INT96_ARRAY,\n  INT104_ARRAY,\n  INT112_ARRAY,\n  INT120_ARRAY,\n  INT128_ARRAY,\n  INT136_ARRAY,\n  INT144_ARRAY,\n  INT152_ARRAY,\n  INT160_ARRAY,\n  INT168_ARRAY,\n  INT176_ARRAY,\n  INT184_ARRAY,\n  INT192_ARRAY,\n  INT200_ARRAY,\n  INT208_ARRAY,\n  INT216_ARRAY,\n  INT224_ARRAY,\n  INT232_ARRAY,\n  INT240_ARRAY,\n  INT248_ARRAY,\n  INT256_ARRAY,\n  BYTES1_ARRAY,\n  BYTES2_ARRAY,\n  BYTES3_ARRAY,\n  BYTES4_ARRAY,\n  BYTES5_ARRAY,\n  BYTES6_ARRAY,\n  BYTES7_ARRAY,\n  BYTES8_ARRAY,\n  BYTES9_ARRAY,\n  BYTES10_ARRAY,\n  BYTES11_ARRAY,\n  BYTES12_ARRAY,\n  BYTES13_ARRAY,\n  BYTES14_ARRAY,\n  BYTES15_ARRAY,\n  BYTES16_ARRAY,\n  BYTES17_ARRAY,\n  BYTES18_ARRAY,\n  BYTES19_ARRAY,\n  BYTES20_ARRAY,\n  BYTES21_ARRAY,\n  BYTES22_ARRAY,\n  BYTES23_ARRAY,\n  BYTES24_ARRAY,\n  BYTES25_ARRAY,\n  BYTES26_ARRAY,\n  BYTES27_ARRAY,\n  BYTES28_ARRAY,\n  BYTES29_ARRAY,\n  BYTES30_ARRAY,\n  BYTES31_ARRAY,\n  BYTES32_ARRAY,\n  BOOL_ARRAY,\n  ADDRESS_ARRAY,\n  BYTES,\n  STRING\n}\n\n/**\n * Get the length of the data for the given schema type\n * (Because Solidity doesn't support constant arrays, we need to use a function)\n */\nfunction getStaticByteLength(SchemaType schemaType) pure returns (uint256) {\n  uint256 index = uint8(schemaType);\n\n  if (index < 97) {\n    // SchemaType enum elements are cyclically ordered for optimal static length lookup\n    // indexes: 00-31, 32-63, 64-95, 96, 97, ...\n    // lengths: 01-32, 01-32, 01-32, 01, 20, (the rest are 0s)\n    unchecked {\n      return (index & 31) + 1;\n    }\n  } else if (schemaType == SchemaType.ADDRESS) {\n    return 20;\n  } else {\n    // Return 0 for all dynamic types\n    return 0;\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

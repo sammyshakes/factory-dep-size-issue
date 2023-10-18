@@ -1,0 +1,34 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/worldResourceTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nimport { RESOURCE_TABLE, RESOURCE_OFFCHAIN_TABLE } from \"./storeResourceTypes.sol\";\n\nbytes2 constant RESOURCE_NAMESPACE = \"ns\";\nbytes2 constant RESOURCE_MODULE = \"md\";\nbytes2 constant RESOURCE_SYSTEM = \"sy\";\n\nbytes32 constant MASK_RESOURCE_NAMESPACE = bytes32(RESOURCE_NAMESPACE);\nbytes32 constant MASK_RESOURCE_MODULE = bytes32(RESOURCE_MODULE);\nbytes32 constant MASK_RESOURCE_SYSTEM = bytes32(RESOURCE_SYSTEM);\n"
+    },
+    "src/CoreModule/storeResourceTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nbytes2 constant RESOURCE_TABLE = \"tb\";\nbytes2 constant RESOURCE_OFFCHAIN_TABLE = \"ot\";\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/CoreModule/storeHookTypes.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.21;\n\nuint8 constant BEFORE_SET_RECORD = 1 << 0;\nuint8 constant AFTER_SET_RECORD = 1 << 1;\nuint8 constant BEFORE_SPLICE_STATIC_DATA = 1 << 2;\nuint8 constant AFTER_SPLICE_STATIC_DATA = 1 << 3;\nuint8 constant BEFORE_SPLICE_DYNAMIC_DATA = 1 << 4;\nuint8 constant AFTER_SPLICE_DYNAMIC_DATA = 1 << 5;\nuint8 constant BEFORE_DELETE_RECORD = 1 << 6;\nuint8 constant AFTER_DELETE_RECORD = 1 << 7;\n\nuint8 constant ALL = BEFORE_SET_RECORD |\n  AFTER_SET_RECORD |\n  BEFORE_SPLICE_STATIC_DATA |\n  AFTER_SPLICE_STATIC_DATA |\n  BEFORE_SPLICE_DYNAMIC_DATA |\n  AFTER_SPLICE_DYNAMIC_DATA |\n  BEFORE_DELETE_RECORD |\n  AFTER_DELETE_RECORD;\n\nuint8 constant BEFORE_ALL = BEFORE_SET_RECORD |\n  BEFORE_SPLICE_STATIC_DATA |\n  BEFORE_SPLICE_DYNAMIC_DATA |\n  BEFORE_DELETE_RECORD;\n\nuint8 constant AFTER_ALL = AFTER_SET_RECORD |\n  AFTER_SPLICE_STATIC_DATA |\n  AFTER_SPLICE_DYNAMIC_DATA |\n  AFTER_DELETE_RECORD;\n"
+    }
+  },
+  "settings": {
+    "remappings": [
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/"
+    ],
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "metadata"
+        ],
+        "*": [
+          "abi",
+          "evm.methodIdentifiers"
+        ]
+      }
+    },
+    "evmVersion": "paris",
+    "libraries": {}
+  }
+}
