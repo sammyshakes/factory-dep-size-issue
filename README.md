@@ -49,7 +49,7 @@ cd ../factory-dep-size-issue
 5. Build `CoreModule.sol`.
 
 ```sh
-../foundry-zksync/target/debug/zkforge zkb --match-contract CoreModule.sol
+../foundry-zksync/target/debug/zkforge zkb --match-contract CoreModule.sol --is-system
 ```
 
 6. Deploy `CoreModule.sol` to a zksync testnet.
