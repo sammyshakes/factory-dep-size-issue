@@ -28,15 +28,14 @@ mkdir fzksync && cd fzksync
 2. Clone the repos into the same directory.
 
 ```sh
-git clone https://github.com/matter-labs/foundry-zksync.git
+git clone -b zk-mud https://github.com/pineappleworkshop/foundry-zksync.git
 git clone https://github.com/sammyshakes/factory-dep-size-issue.git
 ```
 
-3. `cd` into the `foundry-zksync`, checkout `zk-mud` branch and build the application.
+3. `cd` into the `foundry-zksync`.
 
 ```sh
 cd foundry-zksync
-git checkout zk-mud
 cargo build -p foundry-cli
 ```
 
@@ -116,4 +115,4 @@ Number of words: 8771
 Number of words is odd: true
 ```
 
-> After calculating, it falls within the size limitation of zksync (2^16 = 65536) words, which there are only about 15k words between the main contract bytecode and the factory dep bytecode
+- After calculating, it falls within the size limitation of zksync (2^16 = 65536) words, which there are only about 15k words between the main contract bytecode and the factory dep bytecode
